@@ -1,0 +1,4 @@
+
+【中文分词系列】 4. 基于双向LSTM的seq2seq字标注
+
+http://spaces.ac.cn/archives/3924/

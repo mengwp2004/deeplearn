@@ -75,7 +75,7 @@ model = Model(input=sequence, output=output)
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
 batch_size = 1024
-history = model.fit(np.array(list(d['x'])), np.array(list(d['y'])).reshape((-1,maxlen,5)), batch_size=batch_size, nb_epoch=50)
+history = model.fit(np.array(list(d['x'])), np.array(list(d['y'])).reshape((-1,maxlen,5)), batch_size=batch_size, nb_epoch=1)
 
 #转移概率，单纯用了等概率
 zy = {'be':0.5, 
@@ -109,6 +109,8 @@ def simple_cut(s):
         r = model.predict(np.array([list(chars[list(s)].fillna(0).astype(int))+[0]*(maxlen-len(s))]), verbose=False)[0][:len(s)]
         r = np.log(r)
         nodes = [dict(zip(['s','b','m','e'], i[:4])) for i in r]
+        print('before vitebi:')
+        print(nodes)
         t = viterbi(nodes)
         words = []
         for i in range(len(s)):
@@ -130,3 +132,7 @@ def cut_word(s):
         j = i.end()
     result.extend(simple_cut(s[j:]))
     return result
+
+model.save_weights('lstm.h5')
+
+print(cut_word(u'结婚的和尚未结婚的'))
